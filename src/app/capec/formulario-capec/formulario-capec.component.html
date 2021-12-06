@@ -1,0 +1,56 @@
+<mat-card>
+  <mat-card-header>
+    <h1>Formulário Capec</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <section class="section_formulario_capec" fxLayout="column" fxLayoutAlign="space-between stretch">
+      <form (ngSubmit)="submit()" [formGroup]="formularioCapec" fxLayout="column" fxLayoutAlign="start stretch"
+        #formCapec="ngForm">
+        <div formArrayName="beneficiario">
+          <ng-container *ngFor="let item of beneficiario.controls; let i = index">
+            <div [formGroupName]="i" fxLayout="column" fxLayoutAlign="space-around stretch" class="beneficiario">
+              <mat-form-field>
+                <input matInput placeholder="Nome do beneficiário" formControlName="nome" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput placeholder="CPF do beneficiário" formControlName="cpf" required>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="date" placeholder="Data de nascimento" formControlName="dataNascimento" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Vinculo</mat-label>
+                <select matNativeControl formControlName="vinculo" required>
+                  <option value="" selected></option>
+                  <option *ngFor="let v of vinculo" [value]="v.vlr">
+                    {{v.display}}
+                  </option>
+                </select>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="number" placeholder="Digite o percentual" formControlName="percentual" required>
+              </mat-form-field>
+              <input type="hidden" name="cpfParticipante" formControlName="cpfParticipante" [ngModel]="cpfParticipante">
+              <button *ngIf="i > 0" mat-button type="button" color="primary" (click)="retiraBeneficiario(i)">
+                <mat-icon>remove</mat-icon>Remover Beneficiario
+              </button>
+            </div>
+          </ng-container>
+          <div fxLayout="row" fxLayoutAlign="end end">
+            <button mat-button type="button" color="primary" (click)="adicionaBeneficiario()">
+              <mat-icon>add</mat-icon>Adicionar Beneficiario
+            </button>
+          </div>
+        </div>
+        <div>
+          <button mat-mini-fab type="submit" [disabled]="(!formCapec.valid)">
+            <mat-icon>done</mat-icon>
+          </button>
+          <button mat-mini-fab color="warn" (click)="limparFormulario()">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </form>
+    </section>
+  </mat-card-content>
+</mat-card>

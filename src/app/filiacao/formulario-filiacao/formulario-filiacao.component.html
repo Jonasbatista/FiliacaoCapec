@@ -1,0 +1,57 @@
+<mat-card>
+  <mat-card-content>
+    <section *ngIf="exibeFiliacao" class="section_formulario_filiacao" fxLayout="column"
+      fxLayoutAlign="space-between stretch">
+      <form (ngSubmit)="onSubmit()" [formGroup]="formularioParticipante" #formParticipante="ngForm">
+        <!-- Formulário Participante -->
+        <div *ngIf="exibeFiliacao">
+          <h1>Formulário Filiação</h1>
+          <div class="participante" fxLayout="column" fxLayoutAlign="start stretch">
+            <mat-form-field>
+              <input matInput placeholder="Digite seu nome" formControlName="nome" #campoNome required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Digite seu CPF" formControlName="cpf" #campoCPF required
+                [(ngModel)]="cpfParticipante">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="date" placeholder="Data de nascimento" #campoDatNasc
+                formControlName="dataNascimento" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="email" placeholder="Digite seu email" #campoEmail formControlName="email" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="tel" placeholder="Digite seu telefone" #campoTelefone formControlName="telefone"
+                required>
+            </mat-form-field>
+            <h4>Escolha o regime de tributação</h4>
+            <div id="regimeTribut">
+              <label class="radio-inline">
+                <input type="radio" value="prog" formControlName="regTributacao" /> Progressivo
+              </label>
+              <label class="radio-inline">
+                <input type="radio" value="reg" formControlName="regTributacao" /> Regressivo
+              </label>
+              <label class="radio-inline">
+                <input type="radio" value="00" formControlName="regTributacao" /> Deixar pra depois
+              </label>
+            </div>
+          </div>
+          <div>
+            <button mat-mini-fab type="submit" [disabled]="(!formParticipante.valid)">
+              <mat-icon>done</mat-icon>
+            </button>
+            <button mat-mini-fab color="warn" type="button" (click)="limparFormulario()">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+    <section *ngIf="exibeCapec">
+      <app-formulario-capec [cpfParticipante]="cpfParticipante" [protocoloFiliacao]="protocoloFiliacao">
+      </app-formulario-capec>
+    </section>
+  </mat-card-content>
+</mat-card>

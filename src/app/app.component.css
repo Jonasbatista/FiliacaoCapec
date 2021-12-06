@@ -1,0 +1,22 @@
+.container .cardWrap div{
+height: 200px;
+}
+
+@media (max-width: 600px){
+  #alteraOrdemDiv {
+    flex-direction: row-reverse;
+  }
+}
+
+.divTextoRight {
+  margin: 5px;
+  padding: 20px;
+  text-align: right;
+}
+
+
+.divTextoLeft {
+  margin: 5px;
+  padding: 20px;
+  text-align: left;
+}
