@@ -1,56 +1,99 @@
-<mat-card>
-  <mat-card-header>
-    <h1>Formulário Capec</h1>
-  </mat-card-header>
-  <mat-card-content>
-    <section class="section_formulario_capec" fxLayout="column" fxLayoutAlign="space-between stretch">
-      <form (ngSubmit)="submit()" [formGroup]="formularioCapec" fxLayout="column" fxLayoutAlign="start stretch"
-        #formCapec="ngForm">
-        <div formArrayName="beneficiario">
-          <ng-container *ngFor="let item of beneficiario.controls; let i = index">
-            <div [formGroupName]="i" fxLayout="column" fxLayoutAlign="space-around stretch" class="beneficiario">
-              <mat-form-field>
-                <input matInput placeholder="Nome do beneficiário" formControlName="nome" required>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput placeholder="CPF do beneficiário" formControlName="cpf" required>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput type="date" placeholder="Data de nascimento" formControlName="dataNascimento" required>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Vinculo</mat-label>
-                <select matNativeControl formControlName="vinculo" required>
-                  <option value="" selected></option>
-                  <option *ngFor="let v of vinculo" [value]="v.vlr">
-                    {{v.display}}
-                  </option>
-                </select>
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput type="number" placeholder="Digite o percentual" formControlName="percentual" required>
-              </mat-form-field>
-              <input type="hidden" name="cpfParticipante" formControlName="cpfParticipante" [ngModel]="cpfParticipante">
-              <button *ngIf="i > 0" mat-button type="button" color="primary" (click)="retiraBeneficiario(i)">
-                <mat-icon>remove</mat-icon>Remover Beneficiario
-              </button>
+  <div class="form-body">
+    <div class="row">
+      <div class="form-holder">
+        <div class="form-content">
+          <div class="form-items">
+            <div class=form-control>
+              <div class="row">
+                <h4>Você gostaria também de aderir a Capec?</h4>
+                <p><b>O plano de pecúlio da Previ feito pra você. Conte com ainda mais tranquilidade e segurança para
+                    você e sua família.</b></p>
+                <div class="col-md-2">
+                  <input class="form-check-input" type="radio" formControlName="aderirCapec" name="aderirCapec"
+                    value="SIM"><span style="margin-left: 5px;">SIM, QUERO ADERIR</span>
+                </div>
+                <div class="col-md-2">
+                  <input class="form-check-input" type="radio" formControlName="aderirCapec" name="aderirCapec"
+                    value="NAO"><span style="margin-left: 5px;">DEIXAR PRA
+                    DEPOIS</span>
+                </div>
+              </div>
             </div>
-          </ng-container>
-          <div fxLayout="row" fxLayoutAlign="end end">
-            <button mat-button type="button" color="primary" (click)="adicionaBeneficiario()">
-              <mat-icon>add</mat-icon>Adicionar Beneficiario
-            </button>
+            <br />
+            <div class=form-control>
+              <h3>Escolha o Plano</h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <p>Plano Morte Júnior</p>
+                  <p>Para uma cobertura de</p>
+                  <p>Você paga apenas</p>
+                  <input class="form-check-input" type="radio" id="escolherCapec" name="planoCapecEscolhido"
+                    value="AGORA"><span style="margin-left: 5px;">SELECIONAR</span>
+                </div>
+                <div class="col-md-6">
+                  <p>Plano Morte Júnior + Invalidez Júnior</p>
+                  <p>Para uma cobertura de</p>
+                  <p>Você paga apenas</p>
+                  <input class="form-check-input" type="radio" id="escolherCapec" name="planoCapecEscolhido"
+                    value="AGORA"><span style="margin-left: 5px;">SELECIONAR</span>
+                </div>
+              </div>
+            </div>
+            <br />
+            <br />
+            <div class="form-items">
+
+              <h3>DADOS DO BENEFICIÁRIO</h3>
+              <form (ngSubmit)="submit()" [formGroup]="formularioCapec" #formCapec="ngForm">
+                <div formArrayName="beneficiario">
+                  <ng-container *ngFor="let item of beneficiario.controls; let i = index">
+                    <div class="col-md-12">
+                      <input class="form-control" type="text" name="nome" formControlName="nome" #campoNome
+                        placeholder="Digite seu nome completo" required>
+                    </div>
+
+                    <div class="col-md-12">
+                      <input class="form-control" type="text" name="cpf" formControlName="cpf" #campoCPF
+                        placeholder="CPF" required>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label>Data de Nascimento</label>
+                      <input class="form-control" type="date" name="dataNascimento" #campoDatNasc
+                        formControlName="dataNascimento" required>
+                    </div>
+
+                    <div class="col-md-12">
+                      <select>
+                        <option value="" selected>Selecione o vínculo</option>
+                        <option *ngFor="let vinculo of vinculos" [value]="vinculo.vlr">
+                          {{vinculo.display}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label>Percentual</label>
+                      <input class="form-control" type="number" name="percentual" formControlName="percentual"
+                        #campoPercentual min="0" required>
+                    </div>
+                    <button *ngIf="i > 0" mat-button type="button" color="primary" (click)="retiraBeneficiario(i)">
+                      <mat-icon>remove</mat-icon>Remover Beneficiario
+                    </button>
+                  </ng-container>
+                </div>
+                <div>
+                  <button mat-mini-fab type="submit" [disabled]="(!formCapec.valid)">
+                    <mat-icon>done</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="warn" (click)="limparFormulario()">
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <div>
-          <button mat-mini-fab type="submit" [disabled]="(!formCapec.valid)">
-            <mat-icon>done</mat-icon>
-          </button>
-          <button mat-mini-fab color="warn" (click)="limparFormulario()">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
-      </form>
-    </section>
-  </mat-card-content>
-</mat-card>
+      </div>
+    </div>
+  </div>

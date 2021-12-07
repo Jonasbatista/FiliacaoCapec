@@ -1,57 +1,125 @@
-<mat-card>
-  <mat-card-content>
-    <section *ngIf="exibeFiliacao" class="section_formulario_filiacao" fxLayout="column"
-      fxLayoutAlign="space-between stretch">
-      <form (ngSubmit)="onSubmit()" [formGroup]="formularioParticipante" #formParticipante="ngForm">
-        <!-- Formulário Participante -->
-        <div *ngIf="exibeFiliacao">
-          <h1>Formulário Filiação</h1>
-          <div class="participante" fxLayout="column" fxLayoutAlign="start stretch">
-            <mat-form-field>
-              <input matInput placeholder="Digite seu nome" formControlName="nome" #campoNome required>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput placeholder="Digite seu CPF" formControlName="cpf" #campoCPF required
-                [(ngModel)]="cpfParticipante">
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput type="date" placeholder="Data de nascimento" #campoDatNasc
-                formControlName="dataNascimento" required>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput type="email" placeholder="Digite seu email" #campoEmail formControlName="email" required>
-            </mat-form-field>
-            <mat-form-field>
-              <input matInput type="tel" placeholder="Digite seu telefone" #campoTelefone formControlName="telefone"
-                required>
-            </mat-form-field>
-            <h4>Escolha o regime de tributação</h4>
-            <div id="regimeTribut">
-              <label class="radio-inline">
-                <input type="radio" value="prog" formControlName="regTributacao" /> Progressivo
-              </label>
-              <label class="radio-inline">
-                <input type="radio" value="reg" formControlName="regTributacao" /> Regressivo
-              </label>
-              <label class="radio-inline">
-                <input type="radio" value="00" formControlName="regTributacao" /> Deixar pra depois
-              </label>
+<div class="form-body">
+  <div class="row">
+    <div class="form-holder">
+      <div class="form-content">
+        <div class="form-items">
+          <h3>Seu perfil</h3>
+          <form (ngSubmit)="onSubmit()" [formGroup]="formularioParticipante" #formParticipante="ngForm"
+            class="requires-validation" novalidate>
+
+            <div class="col-md-12">
+              <input class="form-control" type="text" name="name" formControlName="nome" #campoNome
+                placeholder="Digite seu nome completo" required minlength="5">
             </div>
-          </div>
-          <div>
-            <button mat-mini-fab type="submit" [disabled]="(!formParticipante.valid)">
-              <mat-icon>done</mat-icon>
-            </button>
-            <button mat-mini-fab color="warn" type="button" (click)="limparFormulario()">
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
+
+            <div class="col-md-12">
+              <input class="form-control" type="text" name="cpf" formControlName="cpf" #campoCPF placeholder="CPF"
+                required>
+            </div>
+
+            <div class="col-md-12">
+              <label>Data de Nascimento</label>
+              <input class="form-control" type="date" name="dataNascimento" #campoDatNasc
+                formControlName="dataNascimento" required>
+            </div>
+
+            <div class="col-md-12">
+              <input class="form-control" type="email" name="email" placeholder="E-mail" #campoEmail
+                formControlName="email" required>
+            </div>
+
+            <div class="col-md-12">
+              <input class="form-control" type="text" name="telefone" placeholder="Telefone" #campoTelefone
+                formControlName="telefone" required>
+            </div>
+            <br />
+            <br />
+            <!-- tributacao -->
+            <div formGroupName="tributacao">
+              <div class=form-control>
+                <div class="row">
+                  <h4>Selecionar modelo de tributação</h4>
+                  <p><b>Você gostaria de já selecionar o modelo de tributação do seu plano?</b></p>
+                  <div class="col-md-2">
+                    <input class="form-check-input" type="radio" id="escolherRegimeTributacao1"
+                      formControlName="escolherRegimeTributacao" name="escolherRegimeTributacao" value="DEPOIS"
+                      [(ngModel)]="escolherRegimeTributacao" #escolherRegime (change)="resetRadioButton()"><span
+                      style="margin-left: 5px;">DEIXAR
+                      PRA DEPOIS</span>
+                  </div>
+                  <div class="col-md-2">
+                    <input class="form-check-input" type="radio" id="escolherRegimeTributacao2"
+                      formControlName="escolherRegimeTributacao" name="escolherRegimeTributacao" value="AGORA"
+                      [(ngModel)]="escolherRegimeTributacao" #escolherRegime (change)="resetRadioButton()"><span
+                      style="margin-left: 5px;">QUERO
+                      ESCOLHER AGORA</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-items" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
+                *ngIf="(escolherRegimeTributacao === 'DEPOIS')" class="form-items">
+                <h5>Você tem até 30 dias para fazer esta escolha a partir da contratação do seu Plano
+                  Previ Futuro</h5>
+              </div>
+              <div class="form-items" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
+                *ngIf="(escolherRegimeTributacao === 'AGORA')">
+                <div class="col-md-4">
+                  <input class="form-check-input" type="radio" id="tributacaoRegressiva"
+                    formControlName="regimeTributacaoEscolhido" name="regimeTributacaoEscolhido" value="REGRESSIVA"
+                    [(ngModel)]="regimeTributacaoEscolhido">
+                  <span style="margin-left: 15px;">
+                    <h6>Tributação regressiva definitiva</h6>
+                    <p style="font-size: small;">Previsto no art. 2º da Lei nº 11.053/04, ciente de que esta opção é
+                      irretratável.</p>
+                  </span>
+                </div>
+                <div class="col-md-4">
+
+                  <input class="form-check-input" type="radio" id="tributacaoProgressiva"
+                    formControlName="regimeTributacaoEscolhido" name="regimeTributacaoEscolhido" value="PROGRESSIVA"
+                    [(ngModel)]="regimeTributacaoEscolhido" #progressiva>
+                  <span style="margin-left: 15px;">
+                    <h6>Tributação progressiva</h6>
+                    <p style="font-size: small;">Compensável na Declaração anual da pessoa física, ciente de que tal
+                      opção será
+                      irretratável após o último dia útil do mês subsequente à filiação ao plano.</p>
+                  </span>
+
+                </div>
+              </div>
+              <div class="form-items" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
+                *ngIf="(regimeTributacaoEscolhido || escolherRegimeTributacao == 'DEPOIS' )" class="form-items">
+                <p class="cienteFormulario">Estou ciente de que o Regulamento, a Cartilha/Guia do Previ
+                  Futuro e o Regulamento do Programa
+                  Perfis de Investimento estão disponíveis no site Previ.</p>
+
+                <p class="cienteFormulario">Estou ciente de que meu saldo de conta estará alocado no
+                  Perfil
+                  Padrão definido pela PREVI enquanto
+                  não efetuar a opção por um dos perfis.</p>
+
+                <p class="cienteFormulario">As informações acima prestadas são verdadeiras, e assumo a
+                  inteira responsabilidade pelas mesmas.</p>
+
+                <p class="cienteFormulario">Aceito os termos de uso e a política de tratamento de dados da
+                  Previ</p>
+                <div class="col-md-12">
+                  <input class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="cienteFormulario"
+                    name="cienteFormulario" value="CIENTE" [(ngModel)]="cienteFormulario" (change)="validaFormulario()">
+                  <span style="margin-left: 5px;">Declaro, para os devidos fins, ter lido e estar ciente/concordar com
+                    as autorizações/declarações acima</span>
+                </div>
+              </div>
+            </div>
+            <div>
+            </div>
+            <div class="form-button mt-3">
+              <button type="button" class="btn btn-primary" (click)="onSubmit()"
+                [disabled]="habilitaBtnContinuar">CONTINUAR</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </section>
-    <section *ngIf="exibeCapec">
-      <app-formulario-capec [cpfParticipante]="cpfParticipante" [protocoloFiliacao]="protocoloFiliacao">
-      </app-formulario-capec>
-    </section>
-  </mat-card-content>
-</mat-card>
+      </div>
+    </div>
+  </div>
+</div>

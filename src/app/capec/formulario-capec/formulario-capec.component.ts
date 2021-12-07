@@ -16,7 +16,7 @@ export class FormularioCapecComponent implements OnInit {
   @Input() cpfParticipante!: string;
   @Input() protocoloFiliacao!: string;
 
-  vinculo: Vinculo[] = [
+  vinculos: Vinculo[] = [
     { vlr: 1, display: 'Mãe' },
     { vlr: 2, display: 'Pai' },
     { vlr: 3, display: 'Irmão' },
