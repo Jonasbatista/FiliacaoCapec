@@ -10,7 +10,7 @@ interface Resposta {
   erro: string
 }
 
-const API = environment.API;
+const API = environment.api;
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,4 @@ export class CapecService {
     console.log(beneficiario);
     return this.http.post<Resposta>(`${API}capec/grava-beneficiario`, beneficiario);
   }
-
 }

@@ -1,125 +1,152 @@
-<div class="form-body">
+<div class="form-body  d-flex justify-content-center">
   <div class="row">
-    <div class="form-holder">
-      <div class="form-content">
-        <div class="form-items">
-          <h3>Seu perfil</h3>
-          <form (ngSubmit)="onSubmit()" [formGroup]="formularioParticipante" #formParticipante="ngForm"
-            class="requires-validation" novalidate>
 
+    <h1>Solicite a sua adesão ao <b style="color:rgb(103, 133, 126)">Previ Futuro</b></h1>
+
+    <div class="col-md-7">
+      <p>
+        <span class="breadCrumb" [ngClass]="breadCrumbClassPreviFuturo">Adesão Previ Futuro</span>
+        ->
+        <span class="breadCrumb" [ngClass]="breadCrumbClassCapec">Capec</span> ->
+        <span class="breadCrumb" [ngClass]="breadCrumbClassResumo">Resumo da Solicitação</span>
+      </p>
+    </div>
+    <div *ngIf="exibeFiliacao" class="row">
+
+      <form [formGroup]="formularioParticipante" #formParticipante="ngForm" class="requires-validation" novalidate>
+        <div class="form-content">
+          <div class="form-items">
+            <h1>Seu perfil</h1>
             <div class="col-md-12">
-              <input class="form-control" type="text" name="name" formControlName="nome" #campoNome
-                placeholder="Digite seu nome completo" required minlength="5">
+              <input class="form-control" type="text" name="nome" formControlName="nome" #campoNome
+                placeholder="Digite seu nome completo" required minlength="5" oninput="this.value =
+                this.value.toUpperCase()">
             </div>
 
             <div class="col-md-12">
               <input class="form-control" type="text" name="cpf" formControlName="cpf" #campoCPF placeholder="CPF"
-                required>
+                (blur)="validaParticipante()" mask="000.000.000-00" required>
+            </div>
+
+            <div *ngIf="aguardandoResposta" class="loading-indicator">
+              <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
             </div>
 
             <div class="col-md-12">
               <label>Data de Nascimento</label>
               <input class="form-control" type="date" name="dataNascimento" #campoDatNasc
-                formControlName="dataNascimento" required>
+                formControlName="dataNascimento" [readonly]="habilitaCampos" required>
             </div>
 
             <div class="col-md-12">
               <input class="form-control" type="email" name="email" placeholder="E-mail" #campoEmail
-                formControlName="email" required>
+                formControlName="email" [readonly]="habilitaCampos" required>
             </div>
 
             <div class="col-md-12">
               <input class="form-control" type="text" name="telefone" placeholder="Telefone" #campoTelefone
-                formControlName="telefone" required>
+                formControlName="telefone" mask="(00) 0-0000-0000" [readonly]="habilitaCampos" required>
             </div>
-            <br />
-            <br />
+          </div>
+        </div>
+        <br />
+        <div class="form-content">
+          <div class="form-items">
             <!-- tributacao -->
             <div formGroupName="tributacao">
+
+
+              <h1>Selecionar modelo de tributação</h1>
+              <p><b>Você gostaria de já selecionar o modelo de tributação do seu plano?</b></p>
               <div class=form-control>
                 <div class="row">
-                  <h4>Selecionar modelo de tributação</h4>
-                  <p><b>Você gostaria de já selecionar o modelo de tributação do seu plano?</b></p>
                   <div class="col-md-2">
                     <input class="form-check-input" type="radio" id="escolherRegimeTributacao1"
-                      formControlName="escolherRegimeTributacao" name="escolherRegimeTributacao" value="DEPOIS"
-                      [(ngModel)]="escolherRegimeTributacao" #escolherRegime (change)="resetRadioButton()"><span
-                      style="margin-left: 5px;">DEIXAR
+                      name="escolherRegimeTributacao" value="DEPOIS" #escolherRegimeTributacaoDepois
+                      (change)="resetRadioButton()" [disabled]="habilitaCampos"><span style="margin-left: 5px;">DEIXAR
                       PRA DEPOIS</span>
                   </div>
                   <div class="col-md-2">
                     <input class="form-check-input" type="radio" id="escolherRegimeTributacao2"
-                      formControlName="escolherRegimeTributacao" name="escolherRegimeTributacao" value="AGORA"
-                      [(ngModel)]="escolherRegimeTributacao" #escolherRegime (change)="resetRadioButton()"><span
-                      style="margin-left: 5px;">QUERO
+                      name="escolherRegimeTributacao" value="AGORA" #escolherRegimeTributacaoAgora
+                      (change)="resetRadioButton()" [disabled]="habilitaCampos"><span style="margin-left: 5px;">QUERO
                       ESCOLHER AGORA</span>
                   </div>
                 </div>
               </div>
-              <div class="form-items" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
-                *ngIf="(escolherRegimeTributacao === 'DEPOIS')" class="form-items">
-                <h5>Você tem até 30 dias para fazer esta escolha a partir da contratação do seu Plano
-                  Previ Futuro</h5>
+              <div class=form-control style="margin-top: 10px; background-color: rgb(255, 255, 255);"
+                *ngIf="(escolherRegimeTributacaoDepois.checked)">
+
+                <h3 style="padding: 10px;">Você tem até 30 dias para fazer esta escolha a partir da contratação do seu
+                  Plano Previ Futuro</h3>
+
               </div>
-              <div class="form-items" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
-                *ngIf="(escolherRegimeTributacao === 'AGORA')">
-                <div class="col-md-4">
-                  <input class="form-check-input" type="radio" id="tributacaoRegressiva"
-                    formControlName="regimeTributacaoEscolhido" name="regimeTributacaoEscolhido" value="REGRESSIVA"
-                    [(ngModel)]="regimeTributacaoEscolhido">
-                  <span style="margin-left: 15px;">
-                    <h6>Tributação regressiva definitiva</h6>
-                    <p style="font-size: small;">Previsto no art. 2º da Lei nº 11.053/04, ciente de que esta opção é
-                      irretratável.</p>
-                  </span>
+              <div style="margin-top: 10px; border: 0;" *ngIf="(escolherRegimeTributacaoAgora.checked)">
+                <div class="form-control" style="margin-top: 5px;">
+                  <div class="col-md-4">
+                    <input class="form-check-input" type="radio" id="tributacaoRegressiva"
+                      formControlName="regimeTributacaoEscolhido" name="regimeTributacaoEscolhido" value="REGRESSIVA"
+                      #regressiva>
+                    <div style="margin-left: 15px;">
+                      <h3>Tributação regressiva definitiva</h3>
+                      <p style="font-size: small;">Previsto no art. 2º da Lei nº 11.053/04, ciente de que esta opção é
+                        irretratável.</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-4">
+                <div class="form-control" style="margin-top: 5px;">
+                  <div class="col-md-4">
+                    <input class="form-check-input" type="radio" id="tributacaoProgressiva"
+                      formControlName="regimeTributacaoEscolhido" name="regimeTributacaoEscolhido" value="PROGRESSIVA"
+                      #progressiva>
+                    <div style="margin-left: 15px;">
+                      <h3>Tributação progressiva</h3>
+                      <p style="font-size: small;">Compensável na Declaração anual da pessoa física, ciente de que tal
+                        opção será
+                        irretratável após o último dia útil do mês subsequente à filiação ao plano.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-control" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
+                  *ngIf="(regressiva.checked || progressiva.checked)">
+                  <div>
+                    <p class="cienteFormulario">Estou ciente de que o Regulamento, a Cartilha/Guia do Previ
+                      Futuro e o Regulamento do Programa Perfis de Investimento estão disponíveis no site Previ.</p>
 
-                  <input class="form-check-input" type="radio" id="tributacaoProgressiva"
-                    formControlName="regimeTributacaoEscolhido" name="regimeTributacaoEscolhido" value="PROGRESSIVA"
-                    [(ngModel)]="regimeTributacaoEscolhido" #progressiva>
-                  <span style="margin-left: 15px;">
-                    <h6>Tributação progressiva</h6>
-                    <p style="font-size: small;">Compensável na Declaração anual da pessoa física, ciente de que tal
-                      opção será
-                      irretratável após o último dia útil do mês subsequente à filiação ao plano.</p>
-                  </span>
+                    <p class="cienteFormulario">Estou ciente de que meu saldo de conta estará alocado no
+                      Perfil
+                      Padrão definido pela PREVI enquanto
+                      não efetuar a opção por um dos perfis.</p>
 
+                    <p class="cienteFormulario">As informações acima prestadas são verdadeiras, e assumo a
+                      inteira responsabilidade pelas mesmas.</p>
+
+                    <p class="cienteFormulario">Aceito os termos de uso e a política de tratamento de dados da
+                      Previ</p>
+                  </div>
+                  <div class="col-md-12">
+                    <input class="form-check-input" type="radio" id="flexRadioDefault2"
+                      formControlName="cienteFormulario" name="cienteFormulario" value="CIENTE"
+                      (change)="validaFormulario()" #cienteFormulario>
+                    <span style="margin-left: 5px; font-size: small; font-weight: bolder;">Declaro, para os devidos
+                      fins, ter lido e estar ciente/concordar com as autorizações/declarações acima</span>
+                  </div>
                 </div>
               </div>
-              <div class="form-items" style="margin-top: 10px; background-color: rgb(255, 255, 255);"
-                *ngIf="(regimeTributacaoEscolhido || escolherRegimeTributacao == 'DEPOIS' )" class="form-items">
-                <p class="cienteFormulario">Estou ciente de que o Regulamento, a Cartilha/Guia do Previ
-                  Futuro e o Regulamento do Programa
-                  Perfis de Investimento estão disponíveis no site Previ.</p>
 
-                <p class="cienteFormulario">Estou ciente de que meu saldo de conta estará alocado no
-                  Perfil
-                  Padrão definido pela PREVI enquanto
-                  não efetuar a opção por um dos perfis.</p>
-
-                <p class="cienteFormulario">As informações acima prestadas são verdadeiras, e assumo a
-                  inteira responsabilidade pelas mesmas.</p>
-
-                <p class="cienteFormulario">Aceito os termos de uso e a política de tratamento de dados da
-                  Previ</p>
-                <div class="col-md-12">
-                  <input class="form-check-input" type="radio" id="flexRadioDefault2" formControlName="cienteFormulario"
-                    name="cienteFormulario" value="CIENTE" [(ngModel)]="cienteFormulario" (change)="validaFormulario()">
-                  <span style="margin-left: 5px;">Declaro, para os devidos fins, ter lido e estar ciente/concordar com
-                    as autorizações/declarações acima</span>
-                </div>
-              </div>
             </div>
             <div>
             </div>
-            <div class="form-button mt-3">
-              <button type="button" class="btn btn-primary" (click)="onSubmit()"
-                [disabled]="habilitaBtnContinuar">CONTINUAR</button>
+            <div class="form-button mt-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="habilitaBtnContinuar"
+                style="width: 70%;">CONTINUAR</button>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
+
+    <app-formulario-capec *ngIf="exibeCapec" [formParticipante]="formFiliac"></app-formulario-capec>
+
   </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormularioFiliacao } from 'src/app/filiacao/models/formularioFiliacao';
 import { FormularioBeneficiario } from '../models/beneficiario'
 
 interface Vinculo {
@@ -13,8 +14,13 @@ interface Vinculo {
 })
 export class FormularioCapecComponent implements OnInit {
 
-  @Input() cpfParticipante!: string;
-  @Input() protocoloFiliacao!: string;
+  @Input() formParticipante!: any;  /// ALINHAR ISSO AQUI!!!!!
+
+
+
+  aderirCapec: string = '';
+  beneficiarios: FormularioBeneficiario[] = [];
+  labelBtnIncluirBeneficiario: string = 'INCLUIR';
 
   vinculos: Vinculo[] = [
     { vlr: 1, display: 'Mãe' },
@@ -24,55 +30,29 @@ export class FormularioCapecComponent implements OnInit {
 
   ];
 
-  formularioCapec = this.fb.group({
-    beneficiario: this.fb.array([
-      this.fb.group({
-        nome: ['', [Validators.required]],
-        cpf: ['', [Validators.required]],
-        dataNascimento: ['', [Validators.required]],
-        vinculo: ['', [Validators.required]],
-        percentual: ['', [Validators.required]],
-        cpfParticipante: []
-      })
-    ])
-  });
-
-  beneficiario = this.formularioCapec.get('beneficiario') as FormArray;
+  formularioCapec: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.formularioCapec.get('beneficiario') as FormArray;
-
+    this.formularioCapec = this.fb.group({
+      nome: ['', [Validators.required]],
+      cpf: ['', [Validators.required]],
+      dataNascimento: ['', [Validators.required]],
+      vinculo: ['', [Validators.required]],
+      percentual: ['', [Validators.required]]
+    })
   }
+
 
   ngOnInit(): void {
+    console.log(this.formParticipante);
   }
 
-  adicionaBeneficiario() {
-    this.beneficiario.push(
-      this.fb.group({
-        nome: ['', [Validators.required]],
-        cpf: ['', [Validators.required]],
-        dataNascimento: ['', [Validators.required]],
-        vinculo: ['', [Validators.required]],
-        percentual: ['', [Validators.required]],
-        cpfParticipante: []
-      })
-    );
-  }
+  incluirBeneficiario() {
 
+    this.labelBtnIncluirBeneficiario = 'INCLUIR + 1 BENEFICIÁRIO';
 
-  retiraBeneficiario(index: number) {
-    this.beneficiario.removeAt(index);
-  }
-
-  submit() {
-
-    //let totalPercentual: number = 0;
-
-    let formulario = {
-      ... this.formularioCapec.value
-    }
-
+    this.beneficiarios.push(this.formularioCapec.value);
+    this.limparFormulario();
 
     // verificar o percentual total gravado:
     /*
@@ -81,13 +61,20 @@ export class FormularioCapecComponent implements OnInit {
     });
 */
 
-    console.log(this.protocoloFiliacao);
-    console.log(formulario);
+    console.log(this.beneficiarios);
 
   }
 
   limparFormulario() {
     this.formularioCapec.reset();
+  }
+
+  valoresCapec() {
+
+  }
+
+  mudou2() {
+    console.log('mudou 2')
   }
 
 }

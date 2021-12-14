@@ -9,11 +9,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { UpperCaseDirective } from './formulario-capec/upper-case.directive';
 
 
 @NgModule({
   declarations: [
-    FormularioCapecComponent
+    FormularioCapecComponent,
+    UpperCaseDirective
   ],
   imports: [
     CommonModule,

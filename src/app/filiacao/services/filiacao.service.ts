@@ -7,12 +7,16 @@ import { Participante } from '../models/participante';
 import { environment } from '../../../environments/environment'
 
 interface Resposta {
-  participante: Participante,
-  protocolo: string,
-  erro: string
+  participante: Participante;
+  status: String,
+  protocoloFiliacao: String,
+  protocoloCapec: String,
+  erro: String;
 }
 
-const API = environment.API
+
+
+const API = environment.api
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +27,7 @@ export class FiliacaoService {
 
 
   participantePorCpf(cpf: string): Observable<Resposta> {
-    return this.http.get<Resposta>(`${API}filiacao/participante/${cpf}`);
+    return this.http.get<Resposta>(`${API}filiacao/${cpf}/participante`);
   }
 
 

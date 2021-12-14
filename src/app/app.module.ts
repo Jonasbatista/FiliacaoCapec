@@ -8,6 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FiliacaoModule } from './filiacao/filiacao.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CapecModule } from './capec/capec.module';
+import { ResumoFinalModule } from './resumo-final/resumo-final.module';
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -20,7 +23,8 @@ import { CapecModule } from './capec/capec.module';
     FiliacaoModule,
     FormsModule, ReactiveFormsModule,
     HttpClientModule,
-    CapecModule
+    CapecModule,
+    ResumoFinalModule
   ],
   providers: [],
   bootstrap: [AppComponent]

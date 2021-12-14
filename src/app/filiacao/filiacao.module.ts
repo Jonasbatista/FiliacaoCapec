@@ -10,7 +10,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CapecModule } from '../capec/capec.module';
-
+import { NgxMaskModule } from 'ngx-mask';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ResumoFinalModule } from '../resumo-final/resumo-final.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,11 @@ import { CapecModule } from '../capec/capec.module';
     FormsModule, ReactiveFormsModule,
     MatRadioModule,
     MatSnackBarModule,
-    CapecModule
+    CapecModule,
+    MatProgressSpinnerModule,
+    ResumoFinalModule,
+    NgxMaskModule.forRoot()
+
   ],
   exports: [FormularioFiliacaoComponent]
 })
